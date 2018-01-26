@@ -195,20 +195,26 @@ static void exceptionHandler(NSException *exception)
 
 - (CGRect)onscreenFrame
 {
-	return [UIScreen mainScreen].applicationFrame;
+    CGFloat h = [UIApplication sharedApplication].statusBarFrame.size.height;
+    CGRect r = [UIScreen mainScreen].bounds;
+    r.origin.y += h;
+    r.size.height -= h;
+	return r;
 }
 
 - (CGRect)offscreenFrame
 {
+    CGFloat h = [UIApplication sharedApplication].statusBarFrame.size.height;
+    
 	CGRect frame = [self onscreenFrame];
 	switch ([UIApplication sharedApplication].statusBarOrientation)
     {
 		case UIInterfaceOrientationPortrait:
         case UIInterfaceOrientationUnknown:
-			frame.origin.y = frame.size.height;
+			frame.origin.y = frame.size.height + h;
 			break;
 		case UIInterfaceOrientationPortraitUpsideDown:
-			frame.origin.y = -frame.size.height;
+			frame.origin.y = -frame.size.height - h;
 			break;
 		case UIInterfaceOrientationLandscapeLeft:
 			frame.origin.x = frame.size.width;
@@ -217,6 +223,7 @@ static void exceptionHandler(NSException *exception)
 			frame.origin.x = -frame.size.width;
 			break;
 	}
+
 	return frame;
 }
 
@@ -237,7 +244,7 @@ static void exceptionHandler(NSException *exception)
 		[UIView setAnimationDelegate:self];
 		[UIView setAnimationDidStopSelector:@selector(consoleShown)];
 		[iConsole sharedConsole].view.frame = [self onscreenFrame];
-        [iConsole sharedConsole].view.transform = [self viewTransform];
+        //[iConsole sharedConsole].view.transform = [self viewTransform];
 		[UIView commitAnimations];
 	}
 }
