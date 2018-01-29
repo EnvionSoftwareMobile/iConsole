@@ -79,7 +79,7 @@ static void exceptionHandler(NSException *exception)
 	
 #else
 	
-	[iConsole crash:@"%@", exception];
+	[iConsole crash:@"%@\n\nStack trace:\n%@)", exception, [[NSThread callStackSymbols] componentsJoinedByString:@"\n"]]];
 	 
 #endif
 
@@ -195,26 +195,20 @@ static void exceptionHandler(NSException *exception)
 
 - (CGRect)onscreenFrame
 {
-    CGFloat h = [UIApplication sharedApplication].statusBarFrame.size.height;
-    CGRect r = [UIScreen mainScreen].bounds;
-    r.origin.y += h;
-    r.size.height -= h;
-	return r;
+    return [UIScreen mainScreen].bounds;
 }
 
 - (CGRect)offscreenFrame
 {
-    CGFloat h = [UIApplication sharedApplication].statusBarFrame.size.height;
-    
 	CGRect frame = [self onscreenFrame];
 	switch ([UIApplication sharedApplication].statusBarOrientation)
     {
 		case UIInterfaceOrientationPortrait:
         case UIInterfaceOrientationUnknown:
-			frame.origin.y = frame.size.height + h;
+			frame.origin.y = frame.size.height;
 			break;
 		case UIInterfaceOrientationPortraitUpsideDown:
-			frame.origin.y = -frame.size.height - h;
+			frame.origin.y = -frame.size.height;
 			break;
 		case UIInterfaceOrientationLandscapeLeft:
 			frame.origin.x = frame.size.width;
@@ -244,7 +238,7 @@ static void exceptionHandler(NSException *exception)
 		[UIView setAnimationDelegate:self];
 		[UIView setAnimationDidStopSelector:@selector(consoleShown)];
 		[iConsole sharedConsole].view.frame = [self onscreenFrame];
-        //[iConsole sharedConsole].view.transform = [self viewTransform];
+        [iConsole sharedConsole].view.transform = [self viewTransform];
 		[UIView commitAnimations];
 	}
 }
