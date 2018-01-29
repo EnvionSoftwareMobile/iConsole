@@ -174,22 +174,22 @@ static void exceptionHandler(NSException *exception)
 - (CGAffineTransform)viewTransform
 {
 	CGFloat angle = 0;
-	switch ([UIApplication sharedApplication].statusBarOrientation)
-    {
-        case UIInterfaceOrientationPortrait:
-        case UIInterfaceOrientationUnknown:
-            angle = 0;
-            break;
-		case UIInterfaceOrientationPortraitUpsideDown:
-			angle = M_PI;
-			break;
-		case UIInterfaceOrientationLandscapeLeft:
-			angle = -M_PI_2;
-			break;
-		case UIInterfaceOrientationLandscapeRight:
-			angle = M_PI_2;
-			break;
-	}
+//    switch ([UIApplication sharedApplication].statusBarOrientation)
+//    {
+//        case UIInterfaceOrientationPortrait:
+//        case UIInterfaceOrientationUnknown:
+//            angle = 0;
+//            break;
+//        case UIInterfaceOrientationPortraitUpsideDown:
+//            angle = M_PI;
+//            break;
+//        case UIInterfaceOrientationLandscapeLeft:
+//            angle = -M_PI_2;
+//            break;
+//        case UIInterfaceOrientationLandscapeRight:
+//            angle = M_PI_2;
+//            break;
+//    }
 	return CGAffineTransformMakeRotation(angle);
 }
 
