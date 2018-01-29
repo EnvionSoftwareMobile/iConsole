@@ -79,7 +79,7 @@ static void exceptionHandler(NSException *exception)
 	
 #else
 	
-	[iConsole crash:@"%@\n\nStack trace:\n%@)", exception, [[NSThread callStackSymbols] componentsJoinedByString:@"\n"]]];
+	[iConsole crash:@"%@\n\nStack trace:\n%@)", exception, [[NSThread callStackSymbols] componentsJoinedByString:@"\n"]];
 	 
 #endif
 
