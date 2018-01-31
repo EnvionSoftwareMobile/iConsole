@@ -79,7 +79,7 @@ static void exceptionHandler(NSException *exception)
 	
 #else
 	
-	[iConsole crash:@"%@\n\nStack trace:\n%@)", exception, [[NSThread callStackSymbols] componentsJoinedByString:@"\n"]];
+	[iConsole crash:@"%@\n\nStack trace:\n%@)", exception.description, [[NSThread callStackSymbols] componentsJoinedByString:@"\n"]];
 	 
 #endif
 
@@ -157,18 +157,40 @@ static void exceptionHandler(NSException *exception)
 
 - (void)infoAction
 {
-	[self findAndResignFirstResponder:[self mainWindow]];
-	
-    //note: we can't use UIAlertController because we don't have a UIViewController
+    [self findAndResignFirstResponder:[self mainWindow]];
     
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                       delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                         destructiveButtonTitle:@"Clear Log"
-                                              otherButtonTitles:@"Send by Email", @"Close Console", nil];
+    UIAlertController *sheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    [sheet addAction:[UIAlertAction actionWithTitle:@"Clear log" style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action)
+                      {
+                          [iConsole clear];
+                      }]];
+    
+    [sheet addAction:[UIAlertAction actionWithTitle:@"Send by Email" style:UIAlertActionStyleDefault handler:^(UIAlertAction* action)
+                      {
+                          
 
-    sheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-    [sheet showInView:self.view];
+                               NSString *URLSafeName = [self URLEncodedString:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]];
+                               NSString *URLSafeLog = [self URLEncodedString:[_log componentsJoinedByString:@"\n"]];
+                               NSMutableString *URLString = [NSMutableString stringWithFormat:@"mailto:%@?subject=%@%%20Console%%20Log&body=%@",
+                                                             _logSubmissionEmail ?: @"", URLSafeName, URLSafeLog];
+                               
+                               [[UIApplication sharedApplication] openURL:[NSURL URLWithString:URLString] options:@{} completionHandler:^(BOOL success) {}];
+                           }]];
+
+    
+    [sheet addAction:[UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleDestructive handler:^(UIAlertAction* action)
+                      {
+
+                               [self hideConsole];
+
+                      }]];
+    
+    sheet.popoverPresentationController.sourceView = self.view;
+    sheet.popoverPresentationController.sourceRect = self.view.bounds;
+    sheet.popoverPresentationController.permittedArrowDirections = 0;
+    
+    [self presentViewController:sheet animated:YES completion:nil];
 }
 
 - (CGAffineTransform)viewTransform
