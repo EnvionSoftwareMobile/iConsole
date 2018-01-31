@@ -217,7 +217,14 @@ static void exceptionHandler(NSException *exception)
 
 - (CGRect)onscreenFrame
 {
-    return [UIScreen mainScreen].bounds;
+{
+    CGRect bounds = [UIScreen mainScreen].bounds;
+    
+    bounds.origin.y += [UIApplication sharedApplication].statusBarFrame.size.height;
+    bounds.size.height -= [UIApplication sharedApplication].statusBarFrame.size.height;
+    
+    return bounds;
+}
 }
 
 - (CGRect)offscreenFrame
