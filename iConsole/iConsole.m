@@ -196,7 +196,7 @@ static void exceptionHandler(NSException *exception)
 - (CGAffineTransform)viewTransform
 {
 	CGFloat angle = 0;
-//    switch ([UIApplication sharedApplication].statusBarOrientation)
+//    switch ([UIApplication.sharedApplication statusBarOrientation])
 //    {
 //        case UIInterfaceOrientationPortrait:
 //        case UIInterfaceOrientationUnknown:
@@ -230,7 +230,7 @@ static void exceptionHandler(NSException *exception)
 - (CGRect)offscreenFrame
 {
 	CGRect frame = [self onscreenFrame];
-	switch ([UIApplication sharedApplication].statusBarOrientation)
+	switch ([UIApplication.sharedApplication statusBarOrientation])
     {
 		case UIInterfaceOrientationPortrait:
         case UIInterfaceOrientationUnknown:
@@ -318,7 +318,7 @@ static void exceptionHandler(NSException *exception)
 {
 	CGRect frame = [[notification.userInfo valueForKey:UIApplicationStatusBarFrameUserInfoKey] CGRectValue];
 	CGRect bounds = [UIScreen mainScreen].bounds;
-	switch ([UIApplication sharedApplication].statusBarOrientation)
+	switch ([UIApplication.sharedApplication statusBarOrientation])
     {
 		case UIInterfaceOrientationPortrait:
         case UIInterfaceOrientationUnknown:
@@ -355,7 +355,7 @@ static void exceptionHandler(NSException *exception)
 	[UIView setAnimationCurve:curve];
 	
 	CGRect bounds = [self onscreenFrame];
-	switch ([UIApplication sharedApplication].statusBarOrientation)
+	switch ([UIApplication.sharedApplication statusBarOrientation])
     {
 		case UIInterfaceOrientationPortrait:
         case UIInterfaceOrientationUnknown:
@@ -768,7 +768,7 @@ static void exceptionHandler(NSException *exception)
 				}
 			}
 			
-			switch ([UIApplication sharedApplication].statusBarOrientation)
+			switch ([UIApplication.sharedApplication statusBarOrientation])
             {
 				case UIInterfaceOrientationPortrait:
                 case UIInterfaceOrientationUnknown:
