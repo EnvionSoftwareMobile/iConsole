@@ -51,7 +51,7 @@
 #define ACTION_BUTTON_WIDTH 28
 
 
-@interface iConsole() <UITextFieldDelegate, UIActionSheetDelegate>
+@interface iConsole() <UITextFieldDelegate>
 
 @property (nonatomic, strong) UITextView *consoleView;
 @property (nonatomic, strong) UITextField *inputField;
@@ -431,39 +431,10 @@ static void exceptionHandler(NSException *exception)
 	return YES;
 }
 
-
-#pragma mark -
-#pragma mark UIActionSheetDelegate methods
-
 - (NSString *)URLEncodedString:(NSString *)string
 {
     return CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)string, NULL, CFSTR("!*'\"();:@&=+$,/?%#[]% "), kCFStringEncodingUTF8));
 }
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-	if (buttonIndex == actionSheet.destructiveButtonIndex)
-	{
-		[iConsole clear];
-	}
-	else if (buttonIndex != actionSheet.cancelButtonIndex)
-	{
-        if (buttonIndex == 1)
-        {
-            NSString *URLSafeName = [self URLEncodedString:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]];
-            NSString *URLSafeLog = [self URLEncodedString:[_log componentsJoinedByString:@"\n"]];
-            NSMutableString *URLString = [NSMutableString stringWithFormat:@"mailto:%@?subject=%@%%20Console%%20Log&body=%@",
-                                          _logSubmissionEmail ?: @"", URLSafeName, URLSafeLog];
-
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:URLString] options:@{} completionHandler:^(BOOL success) {}];
-        }
-        else
-        {
-            [self hideConsole];
-        }
-	}
-}
-
 
 #pragma mark -
 #pragma mark Life cycle
@@ -605,7 +576,7 @@ static void exceptionHandler(NSException *exception)
 	[self.consoleView scrollRangeToVisible:NSMakeRange(self.consoleView.text.length, 0)];
 }
 
-- (void)viewDidUnload
+- (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
@@ -613,8 +584,6 @@ static void exceptionHandler(NSException *exception)
 	self.consoleView = nil;
 	self.inputField = nil;
 	self.actionButton = nil;
-    
-    [super viewDidUnload];
 }
 
 
