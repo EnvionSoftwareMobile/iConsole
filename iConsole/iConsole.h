@@ -34,6 +34,7 @@
 
 
 #import <Availability.h>
+
 #undef weak_delegate
 #if __has_feature(objc_arc_weak)
 #define weak_delegate weak
@@ -54,12 +55,12 @@ typedef enum
     iConsoleLogLevelWarning,
     iConsoleLogLevelInfo
 }
-iConsoleLogLevel;
+    iConsoleLogLevel;
 
 
-@protocol iConsoleDelegate <NSObject>
+@protocol iConsoleDelegate<NSObject>
 
-- (void)handleConsoleCommand:(NSString *)command;
+- (void) handleConsoleCommand:(NSString*)command;
 
 @end
 
@@ -83,36 +84,36 @@ iConsoleLogLevel;
 
 //branding and feedback
 
-@property (nonatomic, copy) NSString *infoString;
-@property (nonatomic, copy) NSString *inputPlaceholderString;
-@property (nonatomic, copy) NSString *logSubmissionEmail;
+@property (nonatomic, copy) NSString* infoString;
+@property (nonatomic, copy) NSString* inputPlaceholderString;
+@property (nonatomic, copy) NSString* logSubmissionEmail;
 
 //styling
 
-@property (nonatomic, strong) UIColor *backgroundColor;
-@property (nonatomic, strong) UIColor *textColor;
+@property (nonatomic, strong) UIColor* backgroundColor;
+@property (nonatomic, strong) UIColor* textColor;
 @property (nonatomic, assign) UIScrollViewIndicatorStyle indicatorStyle;
 
 //methods
 
-+ (iConsole *)sharedConsole;
++ (iConsole*) sharedConsole;
 
-+ (void)log:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
-+ (void)info:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
-+ (void)warn:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
-+ (void)error:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
-+ (void)crash:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2);
++ (void) log:(NSString*)format, ... NS_FORMAT_FUNCTION(1, 2);
++ (void) info:(NSString*)format, ... NS_FORMAT_FUNCTION(1, 2);
++ (void) warn:(NSString*)format, ... NS_FORMAT_FUNCTION(1, 2);
++ (void) error:(NSString*)format, ... NS_FORMAT_FUNCTION(1, 2);
++ (void) crash:(NSString*)format, ... NS_FORMAT_FUNCTION(1, 2);
 
-+ (void)log:(NSString *)format args:(va_list)argList;
-+ (void)info:(NSString *)format args:(va_list)argList;
-+ (void)warn:(NSString *)format args:(va_list)argList;
-+ (void)error:(NSString *)format args:(va_list)argList;
-+ (void)crash:(NSString *)format args:(va_list)argList;
++ (void) log:(NSString*)format args:(va_list)argList;
++ (void) info:(NSString*)format args:(va_list)argList;
++ (void) warn:(NSString*)format args:(va_list)argList;
++ (void) error:(NSString*)format args:(va_list)argList;
++ (void) crash:(NSString*)format args:(va_list)argList;
 
-+ (void)clear;
++ (void) clear;
 
-+ (void)show;
-+ (void)hide;
++ (void) show;
++ (void) hide;
 
 @end
 
